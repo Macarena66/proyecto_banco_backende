@@ -4,6 +4,9 @@ import { BancoArchivos } from '../almacenamiento/banco-archivos';
 import { Gestor } from '../modelos/gestor';
 import { Wrapper } from '../modelos/wrapper';
 import { validarCorreo, validarPassword, validarUsuario } from '../validaciones/validacion-gestores';
+import bcrypt from 'bcrypt';
+import { mostrarGestores } from '../mostrar';
+
 
 export class BancoGestores {
 
@@ -45,12 +48,30 @@ export class BancoGestores {
       return;
     }
 
+    // obtener el hash mediante bcrypt
+    const passwordHash = bcrypt.hashSync(password, 10);
+
     await this.bancoArchivos.insertarGestor({
       usuario, 
-      password,
+      password: passwordHash,
       correo
     } as Gestor);
 
     console.log('Gestor insertado correctamente');    
+  }
+
+  async mostrarGestores() {
+    mostrarGestores(this.bancoArchivos.gestores);
+  }
+
+  async eliminarGestorPorId(w: Wrapper) {
+    const id: string = await w.rlp.questionAsync('Introduzca el id del gestor a eliminar: ');
+    await w.bancoArchivos.eliminarGestorPorId(Number(id));
+    console.log('Gestor eliminado');   
+  }
+
+  async eliminarGestores(w: Wrapper) {
+    await w.bancoArchivos.eliminarGestores();
+    console.log('Todos los gestores eliminados');    
   }
 }

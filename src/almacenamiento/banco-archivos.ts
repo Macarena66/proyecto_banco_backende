@@ -11,7 +11,7 @@ export class BancoArchivos {
     gestores: Gestor[];
 
     //este atributo tiene el valor del id del nuevo gestor
-    idSiguiente: number;
+    idSiguiente: number = 1;
   
     constructor(conf: Configuracion) {
   
@@ -40,9 +40,11 @@ export class BancoArchivos {
       this.gestores = JSON.parse(gestoresStr);
 
       // guardar los id de todos los gestores en un array
-     const ids = this.gestores.map(gestor => gestor.id);
-     const idMaximo = Math.max(...ids);
-     this.idSiguiente = idMaximo +1;
+      const ids = this.gestores.map(gestor => gestor.id);
+      if(ids.length > 0) {
+        const idMaximo = Math.max(...ids);
+        this.idSiguiente = idMaximo + 1;
+      }
 
 
       mostrarGestores(this.gestores)
@@ -79,9 +81,20 @@ export class BancoArchivos {
       // el array de gestores se guarda en el disco duro (archivo gestores.json)
       this.guardarGestores();
     }
+    async eliminarGestorPorId(id: number) {
+      this.gestores = this.gestores.filter(gestor => gestor.id !== id);
+      this.guardarGestores();
+    }
+  
+    async eliminarGestores() {
+      this.gestores = [];
+      this.guardarGestores();
+    }
   
     guardarGestores() {
       const gestoresStr = JSON.stringify(this.gestores, null, 2);
+  
+      // this.rutaGestores = C:\workspace_backend\proyecto_banco_backend\datos\gestores.json
       fs.writeFileSync(this.rutaGestores, gestoresStr);
     }
   }
