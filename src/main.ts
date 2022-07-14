@@ -31,7 +31,7 @@ async function main() {
   const w: Wrapper = {
     conf,
     bancoArchivos: new BancoArchivos(conf),
-    bancodatabase,
+    bancoDatabase,
     rlp: readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -43,6 +43,17 @@ async function main() {
 }
 
 main();
+
+// import randomEmail from 'random-email';
+
+// for (let index = 0; index < 100; index++) {
+//   console.log(randomEmail({domain: 'banco.es'}))
+// }
+
+// import { uniqueNamesGenerator, adjectives, colors, animals, names } from'unique-names-generator';
+
+// const randomName = uniqueNamesGenerator({ dictionaries: [names] }); // big_red_donkey
+// console.log(randomName);
 
 
 // console.log(conf.archivosUbicacion);

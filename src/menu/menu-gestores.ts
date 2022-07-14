@@ -33,6 +33,13 @@ export async function mostrarMenuGestores(w: Wrapper) {
       await bancoGestores.insertarGestor();        
       await w.rlp.questionAsync('');
     }
+
+     // Opción 2 --> Insertar gestores de forma masiva
+     if(opcion === '2') {
+      await bancoGestores.insertarGestoresMasivo(w);
+      await w.rlp.questionAsync('');
+    }
+
     // Opción 3 --> Mostrar gestores 
     else if(opcion === '3') {
       await bancoGestores.mostrarGestores();

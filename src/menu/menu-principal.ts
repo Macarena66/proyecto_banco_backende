@@ -4,6 +4,7 @@ import { Configuracion } from '../modelos/configuracion';
 import { BancoArchivos } from '../almacenamiento/banco-archivos';
 import { mostrarMenuGestores } from './menu-gestores';
 import { Wrapper } from '../modelos/wrapper';
+import { mostarmenuClientes } from './menu-clientes';
 
 // export porque la función se utiliza fuera de este archivo
 // async porque dentro se utiliza await
@@ -29,6 +30,9 @@ export async function mostrarMenuPrincipal(w: Wrapper) {
     
     if(opcion === '1') {
       await mostrarMenuGestores(w);
+    }
+    else if(opcion ==='2'){
+      await mostarmenuClientes(w);
     }
 
   } while(opcion !== '0');
