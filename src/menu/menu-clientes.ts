@@ -22,6 +22,7 @@ export async function mostarmenuClientes(w: Wrapper){
 
         //opcion 1 --> Insertar cliente
         if(opcion === '1'){
+            await bancoClientes.insertarCliente();
             await w.rlp.questionAsync('');
         }
         // Opción 2 --> Insertar clientes de forma masiva

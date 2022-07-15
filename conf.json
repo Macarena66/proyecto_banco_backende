@@ -10,5 +10,7 @@
     "smtpHost": "smtp.gmail.com",
     "smtpPuerto": 465,
     "smtpUsuario": "pepitonode@gmail.com",
-    "smtpPassword": "rhncigxanbrurjnf"
+    "smtpPassword": "rhncigxanbrurjnf",
+
+    "autenticacionHabilitado": false
   }

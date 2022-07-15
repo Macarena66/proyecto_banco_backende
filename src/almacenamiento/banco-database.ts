@@ -7,6 +7,7 @@ export class BancoDatabase {
   // atributos
   private conf: Configuracion;
   private cGestores: Collection<Gestor>
+  // private cClientes: Collection<Cliente>
   private idSiguiente: number = 1;
 
   constructor(conf: Configuracion) {
@@ -55,11 +56,28 @@ export class BancoDatabase {
 
   }
 
-  async obtenerGestorPorCorreo(correo: string): Promise<Gestor> {
-    const gestor = await this.cGestores.findOne({
-      correo
-    })
-    return gestor;
+  async obtenerGestoresPorPaginacion(
+    numPagina: number, 
+    numElementos: number): Promise<Gestor[]> 
+    {
+
+    /*
+    suponiendo que numElementos = 10:
+
+      numPagina = 1 --> skip = 0
+      numPagina = 2 --> skip = 10 -> (numPagina - 1) * numElementos = 10
+      numPagina = 3 --> skip = 20 -> (numPagina - 1) * numElementos = 20
+      numPagina = 4 --> skip = 30
+    */
+
+    const skip = (numPagina - 1) * numElementos;
+    const gestores = await this.cGestores
+      .find({})
+      .skip(skip)
+      .limit(numElementos)
+      .toArray();
+    
+    return gestores;
   }
 
   async obtenerGestorPorUsuario(usuario: string): Promise<Gestor> {
@@ -75,12 +93,13 @@ export class BancoDatabase {
     this.idSiguiente++;
   }
 
-  async eliminarGestoresPorId(id: number){
+  async eliminarGestorPorId(id: number) {
     await this.cGestores.deleteOne({
       id
     });
   }
-  async eliminarGestores(){
+
+  async eliminarGestores() {
     await this.cGestores.deleteMany({});
   }
 

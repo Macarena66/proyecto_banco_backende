@@ -10,6 +10,8 @@ export interface Configuracion {
   smtpHost: string,
   smtpPuerto: number,
   smtpUsuario: string,
-  smtpPassword: string
+  smtpPassword: string,
+
+  autenticacionHabilitado: boolean
 
 }
