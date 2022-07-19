@@ -48,7 +48,11 @@ export class ModuloAutenticacion {
     // si this.gestorAutenticado tiene cualquier valor distinto que resuelva a true, entonces el gestor está autenticado y retornamos true y en caso contrario, false
     return (this.gestorAutenticado) ? true : false;
   }
-  
+
+  obtenerTokenGestor(): string {
+    return this.gestorToken;
+  }
+
   obtenerUsuarioGestor(): string {
     return this.gestorAutenticado;
   }

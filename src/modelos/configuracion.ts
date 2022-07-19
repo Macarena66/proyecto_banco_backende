@@ -12,6 +12,8 @@ export interface Configuracion {
   smtpUsuario: string,
   smtpPassword: string,
 
-  autenticacionHabilitado: boolean
+  autenticacionHabilitado: boolean,
+
+  expressPuerto: number
 
 }

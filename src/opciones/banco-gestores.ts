@@ -8,7 +8,7 @@ import { BancoArchivos } from '../almacenamiento/banco-archivos';
 import { Gestor } from '../modelos/gestor';
 import { Wrapper } from '../modelos/wrapper';
 import { validarCorreo, validarPassword, validarUsuario } from '../validaciones/validacion-gestores';
-import { mostrarGestores } from '../mostrar';
+import { mostrarGestores, mostrarGestor } from '../mostrar';
 import { BancoDatabase } from '../almacenamiento/banco-database';
 
 export class BancoGestores {
@@ -116,10 +116,12 @@ export class BancoGestores {
     }
 
   }
-
+  
   async mostrarGestoresConPaginacion(w: Wrapper) {
 
     const numPagina: number = +(await w.rlp.questionAsync("Número de página: "));
+    
+    
     const numElementos: number = +(await w.rlp.questionAsync("Número de elementos: "));
 
     if((isNaN(numPagina)) || (numPagina < 1)) {
@@ -137,7 +139,57 @@ export class BancoGestores {
       numElementos
     );
     mostrarGestores(gestores);   
+  }
 
+  async mostrarGestorPorId(w: Wrapper) {
+    const id: string = await w.rlp.questionAsync('Id del gestor: ')
+    const idNum = +id;
+
+    // buscar si existe un gestor con el id introducido por el usuario
+    const gestor = await w.bancoDatabase.obtenerGestorPorId(idNum);
+    if(!gestor) {
+      console.log(`No existe el gestor con el id ${id}`);
+      return;
+    }
+
+    mostrarGestor(gestor);
+  }
+
+  async actualizarGestorPorUsuario(w: Wrapper) {
+    const usuario: string = await w.rlp.questionAsync('Usuario gestor: ')
+    const gestor = await w.bancoDatabase.obtenerGestorPorUsuario(usuario);
+    if(!gestor) {
+      console.log(`No existe el gestor con el nombre de usuario ${usuario}`); 
+      return;  
+    }
+
+    // en esta línea del programa sabemos que el usuario existe y ahora que hay solicitar los campos a cambiar (password, correo)
+    const password: string = await this.rlp.questionAsync('Password: ');
+    const msgPassword = await validarPassword(password, this.w);
+    if(msgPassword) { // msgPassword !== null
+      console.log(msgPassword);
+      return;   
+    }
+
+    // solicitamos el correo
+    const correo: string = await this.rlp.questionAsync('Correo: ');
+    const msgCorreo = await validarCorreo(correo, this.w);
+    if(msgCorreo) {
+      console.log(msgCorreo);
+      return;
+    }
+
+    // obtener el hash mediante bcrypt
+    const passwordHash = bcrypt.hashSync(password, 10);
+
+    await w.bancoDatabase.actualizarGestor({
+      usuario,
+      password,
+      correo
+    } as Gestor);
+
+    console.log('Gestor actualizado correctamente');
+    
   }
 
   async eliminarGestorPorId(w: Wrapper) {
@@ -148,7 +200,7 @@ export class BancoGestores {
     }
 
     if(this.w.bancoDatabase) {
-      await w.bancoDatabase.eliminarGestoresPorId(Number(id));   
+      await w.bancoDatabase.eliminarGestorPorId(Number(id));   
     }
 
     console.log('Gestor eliminado');   

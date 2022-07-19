@@ -80,6 +80,20 @@ export class BancoDatabase {
     return gestores;
   }
 
+  async obtenerGestorPorId(id: number): Promise<Gestor> {
+    const gestor = await this.cGestores.findOne({
+      id
+    })
+    return gestor;
+  }
+
+  async obtenerGestorPorCorreo(correo: string): Promise<Gestor> {
+    const gestor = await this.cGestores.findOne({
+      correo
+    })
+    return gestor;
+  }
+
   async obtenerGestorPorUsuario(usuario: string): Promise<Gestor> {
     const gestor = await this.cGestores.findOne({
       usuario
@@ -91,6 +105,18 @@ export class BancoDatabase {
     gestor.id = this.idSiguiente;
     await this.cGestores.insertOne(gestor);
     this.idSiguiente++;
+  }
+
+  async actualizarGestor(gestor: Gestor) {
+    await this.cGestores.updateOne({
+      usuario: gestor.usuario 
+    }, {
+      "$set": {
+        usuario: gestor.usuario,
+        password: gestor.password,
+        correo: gestor.correo
+      }
+    })
   }
 
   async eliminarGestorPorId(id: number) {
