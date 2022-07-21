@@ -14,5 +14,7 @@
 
     "autenticacionHabilitado": false,
 
-    "expressPuerto": 8085
+    "expressPuerto": 8085,
+
+    "peliculasApikey": "a0b990972083b7b9096b930d8fb583a7"
   }

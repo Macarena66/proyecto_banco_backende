@@ -14,6 +14,8 @@ export interface Configuracion {
 
   autenticacionHabilitado: boolean,
 
-  expressPuerto: number
+  expressPuerto: number,
+
+  peliculasApikey: string
 
 }

@@ -4,7 +4,7 @@ import { Configuracion } from '../modelos/configuracion';
 import { BancoArchivos } from '../almacenamiento/banco-archivos';
 import { mostrarMenuGestores } from './menu-gestores';
 import { Wrapper } from '../modelos/wrapper';
-import { mostarmenuClientes } from './menu-clientes';
+import { mostrarMenuClientes } from './menu-clientes';
 import { mostrarMenuOtros } from './menu-otros';
 import { mostrarMenuLogin } from './menu-login';
 
@@ -17,7 +17,7 @@ export async function mostrarMenuPrincipal(w: Wrapper) {
   do {
 
     console.clear();
-    console.log('BANCO');
+    
     console.log('-------------');
 
     // si el gestor no está autenticado
@@ -30,13 +30,14 @@ export async function mostrarMenuPrincipal(w: Wrapper) {
       const gestorAutenticado = w.moduloAutenticacion.obtenerUsuarioGestor();
       console.log(`Gestor autenticado: ${gestorAutenticado}`);
     }
-
+    
+    console.log('-------------');
     console.log('1. Gestores');
     console.log('2. Clientes');
     console.log('3. Mensajes');
     console.log('4. Transferencias');
     console.log('5. Otros');
-
+    
     if(w.conf.autenticacionHabilitado) {
 
       if(!w.moduloAutenticacion.estaGestorAutenticado()) {
@@ -56,10 +57,11 @@ export async function mostrarMenuPrincipal(w: Wrapper) {
       await mostrarMenuGestores(w);
     }
 
-    else if(opcion ==='2'){
-      await mostarmenuClientes(w);
+    else if(opcion === '2') {
+      await mostrarMenuClientes(w);
     }
-     else if(opcion === '5') {
+
+    else if(opcion === '5') {
       await mostrarMenuOtros(w);
     }
 
