@@ -72,6 +72,8 @@ export class BancoGestores {
       } as Gestor)
     }
 
+    this.w.moduloTelegram.enviarMensaje(`Gestor insertado: ${usuario} - ${correo}`)
+
 
     console.log('Gestor insertado correctamente');    
   }
