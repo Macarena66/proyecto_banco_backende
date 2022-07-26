@@ -3,7 +3,7 @@ import { Wrapper } from '../modelos/wrapper';
 import { generarRespuestaError, Respuesta, generarRespuestaOK } from '../modelos/respuesta';
 import { retornarPeliculaAsteriscos, retornarPeliculaOculta } from '../utilidades/utilidades-juego';
 import { Pelicula } from '../modelos/pelicula';
-import { TheMoviesDatabase } from '../almacenamiento/the-movies-database';
+
 
 interface Jugador {
   nombre: string;
@@ -106,8 +106,18 @@ export class ModuloJuegoAnfitrion {
       const numeroElementos = +req.query.num;
       const pagina = +req.query.pagina;
       const peliculas = await this.w.themoviesDatabase.obtenerPeliculasPorPaginacion(pagina, numeroElementos);
+      // https://image.tmdb.org/t/p/original/
       res.json(peliculas)
     })
+
+    // http://localhost:9000/pelicula/buscar?termino=Marvel
+    this.app.get('/pelicula/buscar', async (req, res) => {
+      const termino = req.query.termino.toString();
+      console.log(req.query);
+      
+      const peliculas = await this.w.themoviesDatabase.obtenerPeliculasPorTermino(termino);
+      res.json(peliculas)
+    });
 
     // arranca el servicio de express (puerto 9000)
     this.serverExpress = this.app.listen(this.w.conf.juegoPuertoExpress, () => {
